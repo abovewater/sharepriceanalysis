@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 #tickers for all the stocks I'm watching
 tickers = ['EOS.AX', 'WES.AX', 'BHP.AX']
 
+"""
 ask = input("What stock do you want to check? ")
+"""
 
 #function to return the stock price for the stocks.
 def shareprice(ticker):
@@ -15,17 +17,18 @@ def shareprice(ticker):
     
     return stock
 
+for i in range(len(tickers)):
+    share = shareprice(tickers[i])
 
-share = shareprice(ask)
+    adj_close_px = share['Adj Close']
 
-adj_close_px = share['Adj Close']
+    share['50'] = adj_close_px.rolling(window=50).mean()
+    share['100'] = adj_close_px.rolling(window=100).mean()
+    share['150'] = adj_close_px.rolling(window=150).mean()
 
-share['50'] = adj_close_px.rolling(window=50).mean()
-share['100'] = adj_close_px.rolling(window=100).mean()
-share['150'] = adj_close_px.rolling(window=150).mean()
+    share[['Adj Close', '50', '100', '150']].plot()
 
-share[['Adj Close', '50', '100', '150']].plot()
+    plt.title(tickers[i])
 
-plt.title(ask)
 plt.show()
 
